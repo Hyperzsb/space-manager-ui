@@ -1,0 +1,95 @@
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+    <div>
+        <b-container>
+            <b-row>
+                <b-col cols="8" class="p-3">
+                    <b-table striped hover bordered :items="rooms" :fields="fields" :busy="isBusy" stacked="md"
+                             caption-top>
+                        <template v-slot:table-caption>
+                            <div class="text-center font-weight-bold">
+                                社区空间各房间
+                            </div>
+                        </template>
+                        <template v-slot:table-busy>
+                            <div class="text-center text-info my-2">
+                                <b-spinner class="align-middle m-3"></b-spinner>
+                                <strong>加载中...</strong>
+                            </div>
+                        </template>
+                        <template v-slot:cell(name)="data">
+                            <a :href="`#${data.value.replace(/[^a-z]+/i,'-').toLowerCase()}`" class="text-info">
+                                {{data.value }}
+                            </a>
+                        </template>
+                        <template v-slot:cell(details)="data">
+                            <b-button :href="`#${data.value.replace(/[^a-z]+/i,'-').toLowerCase()}`"
+                                      variant="outline-info" size="sm">
+                                详情->
+                            </b-button>
+                        </template>
+                    </b-table>
+                </b-col>
+            </b-row>
+        </b-container>
+    </div>
+</template>
+
+<script>
+    import {mapState, mapActions} from 'vuex'
+
+    export default {
+        name: "index",
+        data() {
+            return {
+                fields: [
+                    {
+                        key: 'name',
+                        label: '房间名称',
+                        sortable: true,
+                        class: 'text-center text-info',
+                        tdClass: 'font-weight-bold',
+                        stickyColumn: true
+                    },
+                    {
+                        key: 'note',
+                        label: '介绍',
+                        sortable: false,
+                        class: 'text-center',
+                        stickyColumn: true
+                    },
+                    {
+                        key: 'availabilityInfo',
+                        label: '是否可借用',
+                        sortable: true,
+                        class: 'text-center',
+                        stickyColumn: true
+                    },
+                    {
+                        key: 'details',
+                        label: '详情',
+                        class: 'text-center',
+                        thClass: 'text-info'
+                    }
+                ],
+                isBusy: false
+            }
+        },
+        computed: {
+            ...mapState(["rooms"])
+        },
+        methods: {
+            ...mapActions(["getRooms"])
+        },
+        created() {
+            this.isBusy = true;
+            this.getRooms();
+            setTimeout(() => {
+                this.isBusy = false;
+            }, 300);
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
