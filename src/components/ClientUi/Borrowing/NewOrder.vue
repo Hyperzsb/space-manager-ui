@@ -158,7 +158,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapGetters, mapMutations, mapActions} from 'vuex'
 
     const DatePick = () => import('vue-date-pick/src/vueDatePick');
 
@@ -205,6 +205,9 @@
             }
         },
         computed: {
+            ...mapGetters([
+                'availableRooms'
+            ]),
             noteValidation: function () {
                 if (this.form.note.length === 0)
                     return null;
@@ -221,12 +224,16 @@
                             return false;
                     return true;
                 }
-            },
-            ...mapGetters([
-                'availableRooms'
-            ])
+            }
         },
         methods: {
+            ...mapMutations([
+                "commitRooms"
+            ]),
+            ...mapActions([
+                "getRooms",
+                "addOrder"
+            ]),
             async onSubmit(evt) {
                 evt.preventDefault();
                 if (!this.noteValidation) {
@@ -307,10 +314,6 @@
                 str += ':00';
                 return str;
             },
-            ...mapActions([
-                "getRooms",
-                "addOrder"
-            ])
         },
         created() {
             if (this.roomName !== '')
@@ -330,7 +333,11 @@
             this.form.startTime = dateString;
 
             if (this.availableRooms.length === 0)
-                this.getRooms();
+                this.getRooms().then(response => {
+                    this.commitRooms(response.data);
+                }).catch(() => {
+                    this.commitRooms(null);
+                });
         },
         components: {
             DatePick

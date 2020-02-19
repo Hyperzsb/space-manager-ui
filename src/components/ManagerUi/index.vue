@@ -1,16 +1,24 @@
 <template>
     <div>
+        <nav-bar/>
         <transition name="fade" mode="out-in">
             <router-view></router-view>
         </transition>
+        <foot-bar/>
     </div>
 </template>
 
 <script>
     //TODO: Loading component
+    const NavBar = () => import('./NavBar');
+    const FootBar = () => import('./FootBar');
 
     export default {
-        name: 'app'
+        name: "index",
+        components: {
+            NavBar,
+            FootBar
+        }
     }
 </script>
 

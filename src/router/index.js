@@ -1,42 +1,104 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 Vue.use(VueRouter);
 
-const HomeSection = () => import('../components/Home');
-const SpaceInfo = () => import('../components/SpaceInfo');
-const BorrowingManager = () => import('../components/BorrowingManager');
-const NewOrder = () => import('../components/BorrowingManager/NewOrder');
-const OrderList = () => import('../components/BorrowingManager/OrderList');
+const ClientUi = () => import('../components/ClientUi');
+const Home = () => import('../components/ClientUi/Home');
+const Space = () => import('../components/ClientUi/Space');
+const Borrowing = () => import('../components/ClientUi/Borrowing');
+const NewOrder = () => import('../components/ClientUi/Borrowing/NewOrder');
+const OrderList = () => import('../components/ClientUi/Borrowing/OrderList');
+const ManagerUi = () => import('../components/ManagerUi');
+const Login = () => import('../components/ManagerUi/Login');
+const Logout = () => import('../components/ManagerUi/Logout');
+const BorrowingManager = () => import('../components/ManagerUi/Borrowing');
+const SpaceManager = () => import('../components/ManagerUi/Space');
+const Guide = () => import('../components/ManagerUi/Guide');
 
 const index = new VueRouter({
     routes: [{
-        path: '/home',
-        component: HomeSection
+        path: '/',
+        component: ClientUi,
+        children:
+            [{
+                path: 'home',
+                component: Home
+            }, {
+                path: 'space',
+                component: Space
+            }, {
+                path: 'borrowing',
+                component: Borrowing,
+                children: [{
+                    path: 'newOrder/:roomName',
+                    component: NewOrder,
+                    props: true
+                }, {
+                    path: 'orderList',
+                    component: OrderList
+                }, {
+                    path: '',
+                    redirect: 'newOrder'
+                }, {
+                    path: 'newOrder',
+                    redirect: 'newOrder/null'
+                }]
+            }, {
+                path: '/',
+                redirect: '/home'
+            }]
     }, {
-        path: '/space',
-        component: SpaceInfo
-    }, {
-        path: '/borrowing',
-        component: BorrowingManager,
+        path: '/manager',
+        component: ManagerUi,
         children: [{
-            path: 'newOrder/:roomName',
-            component: NewOrder,
-            props: true
+            path: 'login',
+            component: Login
         }, {
-            path: 'orderList',
-            component: OrderList
+            path: 'logout',
+            component: Logout
+        }, {
+            path: 'borrowing',
+            component: BorrowingManager,
+            meta: {
+                requiresAuth: true
+            }
+        }, {
+            path: 'space',
+            component: SpaceManager,
+            meta: {
+                requiresAuth: true
+            }
+        }, {
+            path: 'guide',
+            component: Guide,
+            meta: {
+                requiresAuth: true
+            }
         }, {
             path: '',
-            redirect: 'newOrder/'
-        }, {
-            path: 'newOrder',
-            redirect: 'newOrder/null'
+            redirect: 'borrowing'
         }]
-    }, {
-        path: '/',
-        redirect:
-            '/home'
     }]
+});
+index.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth) {
+        if (store.state.loginStatus) {
+            next();
+        } else {
+            if (sessionStorage.getItem('user') === 'null' && sessionStorage.getItem('token') === 'null') {
+                next('/manager/login');
+            } else {
+                alert('sessionStorage user: ' + sessionStorage.getItem('user') + ' token: ' + sessionStorage.getItem('token'));
+                store.commit('changeLoginStatus', true);
+                store.commit('commitUser', sessionStorage.getItem('user'));
+                store.commit('commitToken', sessionStorage.getItem('token'));
+                next();
+            }
+        }
+    } else {
+        next();
+    }
 });
 export default index;

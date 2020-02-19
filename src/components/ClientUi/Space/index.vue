@@ -5,14 +5,22 @@
                 <b class="custom-h3 text-dark">睿信社区空间房间概况</b>
             </b-col>
         </b-row>
-        <b-row align-h="center">
+        <b-row align-h="center" class="m-5 p-5" :class="{'d-none': !isLoading}">
+            <b-col cols="6" class="text-ruixin text-right">
+                <b-spinner style="width: 3.5rem; height: 3.5rem;" label="Large Spinner"></b-spinner>
+            </b-col>
+            <b-col cols="6" class="text-ruixin text-left pt-3">
+                <strong>Loading...</strong>
+            </b-col>
+        </b-row>
+        <b-row align-h="center" :class="{'d-none': isLoading}">
             <b-col cols="12">
                 <b-card-group deck>
                     <b-container>
                         <b-row cols="1" cols-md="2" cols-xl="3" align-h="around">
                             <b-col v-for="(room, index) in rooms" :key="index" class="p-3">
                                 <b-card no-body header-bg-variant="ruixin" header-text-variant="white"
-                                        header-tag="header" footer-tag="footer" class="shadow">
+                                        header-tag="header" footer-tag="footer" class="custom-card">
                                     <template v-slot:header>
                                         <b class="custom-h5 text-white">
                                             <b-icon :icon="houseIcon(room)"></b-icon>
@@ -74,11 +82,13 @@
     export default {
         name: "OldIndex.vue",
         data() {
-            return {}
+            return {
+                isLoading: true
+            }
         },
         computed: {
             ...mapState([
-                "navItem",
+                "clientNavItem",
                 "rooms"
             ])
         },
@@ -105,15 +115,26 @@
                 return Math.round(Math.random() * 3000 + 3000);
             },
             ...mapMutations([
-                "changeNavItem"
+                "changeClientNavItem"
             ]),
             ...mapActions([
                 "getRooms"
             ])
         },
         created() {
-            this.getRooms();
-            this.changeNavItem(1);
+            if (this.rooms.length !== 0) {
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 500);
+            } else {
+                let that = this;
+                this.getRooms().then(() => {
+                    setTimeout(() => {
+                        that.isLoading = false;
+                    }, 500);
+                });
+            }
+            this.changeClientNavItem(1);
         },
         components: {
             BCarousel,
@@ -123,6 +144,30 @@
 </script>
 
 <style lang="scss" scoped>
+    // Import custom SASS variable overrides, or alternatively
+    // define your variable overrides here instead
+    @import '../../../assets/custom';
+    // Import Bootstrap and BootstrapVue source SCSS files
+    @import '../../../../node_modules/bootstrap/scss/bootstrap';
+    @import '../../../../node_modules/bootstrap-vue/src/index';
+
+    .custom-card {
+        box-shadow: 0 .125rem .25rem rgba($black, .075);
+        transition: 0.5s;
+
+        &:hover {
+            box-shadow: 0 1rem 3rem rgba($black, .175);
+        }
+    }
+
+    @keyframes card-frames {
+        from {
+            box-shadow: 0 .125rem .25rem rgba($black, .075);
+        }
+        to {
+            box-shadow: 0 1rem 3rem rgba($black, .175);
+        }
+    }
 
     .custom-h3 {
         font-weight: bold;

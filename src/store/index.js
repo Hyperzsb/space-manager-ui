@@ -6,7 +6,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        navItem: -1,
+        user: null,
+        token: null,
+        loginStatus: false,
+        clientNavItem: -1,
+        managerNavItem: -1,
         rooms: [],
         orders: []
     },
@@ -19,42 +23,39 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        changeNavItem(state, index) {
-            state.navItem = index;
+        commitUser(state, user) {
+            state.user = user;
         },
-        getRooms(state, rooms) {
+        commitToken(state, token) {
+            state.toke = token;
+        },
+        changeLoginStatus(state, isLogin) {
+            state.loginStatus = isLogin;
+        },
+        changeClientNavItem(state, index) {
+            state.clientNavItem = index;
+        },
+        changeManagerNavItem(state, index) {
+            state.managerNavItem = index;
+        },
+        commitRooms(state, rooms) {
             state.rooms = rooms;
         },
-        getOrders(state, orders) {
+        commitOrders(state, orders) {
             state.orders = orders;
         }
     },
     actions: {
-        getRooms(context) {
-            if (context.state.rooms.length === 0) {
-                axios.get('/api/room/')
-                    .then(response => {
-                        context.commit('getRooms', response.data);
-                    }).catch(() => {
-                    context.commit('getRooms', null);
-                });
-            }
+        getRooms() {
+            return axios.get('/api/room/');
         },
-        getAsyncOrders() {
-            // if (context.state.orders.length === 0) {
-            //     axios.get('/api/order/')
-            //         .then(response => {
-            //             context.commit('getOrders', response.data);
-            //         }).catch(() => {
-            //         context.commit('getRooms', null);
-            //     })
-            // }
-            return axios.get('/api/order/');
+        getOrders() {
+            return axios.get('/api/borrowing/');
         },
         addOrder(context, order) {
             return axios({
                 method: 'post',
-                url: '/api/order/',
+                url: '/api/borrowing/',
                 data: order,
                 transformRequest: [function (data) {
                     return JSON.stringify(data).toString();

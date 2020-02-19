@@ -264,16 +264,16 @@
                 this.currentPage = 1;
             },
             ...mapMutations([
-                "getOrders"
+                "commitOrders"
             ]),
             ...mapActions([
-                "getAsyncOrders"
+                "getOrders"
             ])
         },
         created() {
             this.isBusy = true;
-            this.getAsyncOrders().then(response => {
-                this.getOrders(response.data);
+            this.getOrders().then(response => {
+                this.commitOrders(response.data);
                 this.totalRows = this.orders.length;
                 this.currentPage = 1;
                 this.isBusy = false;

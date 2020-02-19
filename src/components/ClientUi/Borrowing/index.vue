@@ -42,7 +42,7 @@
         },
         computed:{
           ...mapState([
-              "navItem"
+              "clientNavItem"
           ])
         },
         methods: {
@@ -56,7 +56,7 @@
                     return '历史预约';
             },
             ...mapMutations([
-                "changeNavItem"
+                "changeClientNavItem"
             ])
         },
         created() {
@@ -64,7 +64,7 @@
                 this.activeNavItemIndex = 0;
             else if (this.$router.currentRoute.path.includes('/orderList'))
                 this.activeNavItemIndex = 1;
-            this.changeNavItem(2);
+            this.changeClientNavItem(2);
         }
     }
 </script>

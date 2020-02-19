@@ -67,7 +67,7 @@
                     };
             },
             ...mapState([
-                "navItem"
+                "clientNavItem"
             ])
         },
         watch: {
@@ -77,11 +77,11 @@
         },
         methods: {
             ...mapMutations([
-                "changeNavItem"
+                "changeClientNavItem"
             ])
         },
         created() {
-            this.changeNavItem(0);
+            this.changeClientNavItem(0);
         },
         mounted() {
             const that = this;

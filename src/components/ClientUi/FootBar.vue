@@ -38,7 +38,7 @@
                     <b-col md="2" order-md="2" order="1" class="mb-3">
                         <b-row align-v="center" style="height: 100%">
                             <b-col>
-                                <b-img center rounded="circle" :src="require('../assets/img/RuiXinLOGO.png')" alt="睿信书院"
+                                <b-img center rounded="circle" :src="require('../../assets/img/RuiXinLOGO.png')" alt="睿信书院"
                                        style="height: 11rem"></b-img>
                             </b-col>
                         </b-row>
@@ -78,7 +78,7 @@
         name: "FootBar",
         computed: {
             version: () => {
-                return require("../../package.json").version;
+                return require("../../../package.json").version;
             }
         }
     }
@@ -87,10 +87,10 @@
 <style lang="scss" scoped>
     // Import custom SASS variable overrides, or alternatively
     // define your variable overrides here instead
-    @import '../assets/custom.scss';
+    @import '../../assets/custom';
     // Import Bootstrap and BootstrapVue source SCSS files
-    @import '~bootstrap/scss/bootstrap.scss';
-    @import '~bootstrap-vue/src/index.scss';
+    @import '../../../node_modules/bootstrap/scss/bootstrap';
+    @import '../../../node_modules/bootstrap-vue/src/index';
 
     .border-top-3 {
         border-top: $gray-300 3px solid;
