@@ -84,7 +84,6 @@
                     this.commitToken(null);
                     sessionStorage.setItem('user', null);
                     sessionStorage.setItem('token', null);
-                    alert('sessionStorage user: ' + sessionStorage.getItem('user') + ' token: ' + sessionStorage.getItem('token'));
                     this.alertVariant = 'success';
                     this.alertContent = '登出成功！';
                     this.dismissSecs = 3;
@@ -108,34 +107,7 @@
             }
         },
         created() {
-            /*
-            if (!this.loginStatus)
-                axios({
-                    methods: 'get',
-                    url: '/api/manager/authentication'
-                }).then(resolve => {
-                    if (resolve.status === 200 && resolve.data.authenticated) {
-                        this.changeLoginStatus(true);
-                        this.commitUser(resolve.data.name);
-                        this.commitToken(resolve.data.details.sessionId);
-                        sessionStorage.setItem('user', resolve.data.name);
-                        sessionStorage.setItem('token', resolve.data.details.sessionId);
-                        this.changeManagerNavItem(3);
-                    } else {
-                        this.$router.push('/manager/borrowing');
-                    }
-                }).catch(reject => {
-                    if (reject.response.status === 403) {
-                        this.$router.push('/manager/borrowing');
-                    } else if (reject.response.status === 500) {
-                        this.$router.push('/manager/borrowing');
-                    } else {
-                        this.$router.push('/manager/borrowing');
-                    }
-                });
-            else
-             */
-                this.changeManagerNavItem(3);
+            this.changeManagerNavItem(3);
         }
     }
 </script>

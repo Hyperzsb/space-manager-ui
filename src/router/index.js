@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import axios from 'axios'
 import store from '../store'
 
 Vue.use(VueRouter);
@@ -90,15 +91,24 @@ index.beforeEach((to, from, next) => {
             if (sessionStorage.getItem('user') === 'null' && sessionStorage.getItem('token') === 'null') {
                 next('/manager/login');
             } else {
-                alert('sessionStorage user: ' + sessionStorage.getItem('user') + ' token: ' + sessionStorage.getItem('token'));
-                store.commit('changeLoginStatus', true);
-                store.commit('commitUser', sessionStorage.getItem('user'));
-                store.commit('commitToken', sessionStorage.getItem('token'));
-                next();
+                axios({
+                    method: 'get',
+                    url: '/api/manager/authentication'
+                }).then(() => {
+                    store.commit('changeLoginStatus', true);
+                    store.commit('commitUser', sessionStorage.getItem('user'));
+                    store.commit('commitToken', sessionStorage.getItem('token'));
+                    next();
+                }).catch(() => {
+                    sessionStorage.setItem('user', null);
+                    sessionStorage.setItem('token', null);
+                    next('/manager/login');
+                });
             }
         }
     } else {
         next();
     }
 });
+
 export default index;

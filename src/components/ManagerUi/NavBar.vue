@@ -14,13 +14,13 @@
                        :class="{ 'border-bottom-2': this.managerNavItem === 0 }">预约管理</b>
                 </b-nav-item>
                 <b-nav-item to="/manager/space" replace
-                            :disabled="!this.loginStatus"
+                            :disabled="true"
                             :class="{ active: this.managerNavItem === 1 }">
                     <b class="d-inline-block pb-1 pt-1"
                        :class="{ 'border-bottom-2': this.managerNavItem === 1 }">房间管理</b>
                 </b-nav-item>
                 <b-nav-item to="/manager/guide" replace
-                            :disabled="!this.loginStatus"
+                            :disabled="true"
                             :class="{ active: this.managerNavItem === 2 }">
                     <b class="d-inline-block pb-1 pt-1"
                        :class="{ 'border-bottom-2': this.managerNavItem === 2 }">指南</b>

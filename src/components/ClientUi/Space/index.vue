@@ -115,7 +115,8 @@
                 return Math.round(Math.random() * 3000 + 3000);
             },
             ...mapMutations([
-                "changeClientNavItem"
+                "changeClientNavItem",
+                "commitRooms"
             ]),
             ...mapActions([
                 "getRooms"
@@ -128,7 +129,8 @@
                 }, 500);
             } else {
                 let that = this;
-                this.getRooms().then(() => {
+                this.getRooms().then(resolve => {
+                    this.commitRooms(resolve.data);
                     setTimeout(() => {
                         that.isLoading = false;
                     }, 500);

@@ -107,9 +107,7 @@
                     this.commitUser(resolve.data.name);
                     this.commitToken(resolve.data.details.sessionId);
                     sessionStorage.setItem('user', resolve.data.name);
-                    alert(resolve.data.details.sessionId);
                     sessionStorage.setItem('token', resolve.data.details.sessionId);
-                    alert(sessionStorage.getItem('token'));
                     this.alertVariant = 'success';
                     this.alertContent = '登录成功！将在3秒内跳转至首页...';
                     this.dismissCountDown = this.dismissSecs;
@@ -130,44 +128,6 @@
             }
         },
         created() {
-            /*
-            if (this.loginStatus) {
-                axios({
-                    methods: 'get',
-                    url: '/api/manager/authentication'
-                }).then(resolve => {
-                    if (resolve.status === 200 && resolve.data.authenticated) {
-                        this.commitUser(resolve.data.name);
-                        this.commitToken(resolve.data.details.sessionId);
-                        if (!sessionStorage.getItem('user'))
-                            sessionStorage.setItem('user', resolve.data.name);
-                        if (!sessionStorage.getItem('token'))
-                            sessionStorage.setItem('token', resolve.data.details.sessionId);
-                        this.$router.push('/manager/borrowing');
-                    } else {
-                        this.changeLoginStatus(false);
-                        this.commitUser(null);
-                        this.commitToken(null);
-                        sessionStorage.setItem('user', null);
-                        sessionStorage.setItem('token', null);
-                        this.changeManagerNavItem(3);
-                    }
-                }).catch(reject => {
-                    if (reject.response.status === 403) {
-                        this.changeLoginStatus(false);
-                    } else if (reject.response.status === 500) {
-                        this.changeLoginStatus(false);
-                    } else {
-                        this.changeLoginStatus(false);
-                    }
-                    this.commitUser(null);
-                    this.commitToken(null);
-                    sessionStorage.setItem('user', null);
-                    sessionStorage.setItem('token', null);
-                    this.changeManagerNavItem(3);
-                });
-            } else
-             */
             this.changeManagerNavItem(3);
         }
     }
