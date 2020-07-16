@@ -44,9 +44,9 @@
                         </b-row>
                     </b-col>
                 </b-row>
-                <b-row class="p-3">
+                <b-row class="pt-3 pb-1">
                     <b-col cols="10" offset="1" sm="8" offset-sm="2" class="border-top-1">
-                        <div class="p-3 font-size-09 text-secondary">
+                        <div class="pt-3 font-size-09 text-secondary">
                             Designed and built by&nbsp;
                             <b-link href="#" class="custom-link">
                                 Hyperview
@@ -65,6 +65,9 @@
                             <b-link href="https://www.mit-license.org/" class="custom-link">
                                 MIT
                             </b-link>
+                        </div>
+                        <div class="pt-2 font-size-09 text-secondary">
+                            <b-link href="http://www.beian.miit.gov.cn" class="custom-link">京ICP备20005820号-1</b-link>
                         </div>
                     </b-col>
                 </b-row>
